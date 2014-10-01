@@ -1,0 +1,50 @@
+ReverseAuction\ReverseAuctionBundle\Entity\BidsInfo:
+    type: entity
+    table: null
+    repositoryClass: ReverseAuction\ReverseAuctionBundle\Entity\BidsInfoRepository
+    id:
+        id:
+            type: integer
+            bid: true
+            column: bid
+            generator:
+                strategy: AUTO
+    fields:
+        bUserName:
+            type: string
+            length: '30'
+        bEmail:
+            type: string
+            length: '30'
+        bProductName:
+            type: string
+            length: '30'
+        bAmount:
+            type: string
+            length: '30'
+        createdDate:
+            type: datetime
+        updatedDate:
+            type: datetime
+    oneToMany:
+     WinnerInfo:
+      targetEntity: ReverseAuction\ReverseAuctionBundle\Entity\WinnerInfo
+      mappedBy: BidsInfo
+    manyToOne:
+     UserInfo:
+      targetEntity: ReverseAuction\ReverseAuctionBundle\Entity\UserInfo
+      inversedBy: BidsInfo
+      joinColumn:
+        onDelete: "CASCADE"
+        name: userid
+        referencedColumnName: userid
+     ProductInfo:
+      targetEntity: ReverseAuction\ReverseAuctionBundle\Entity\ProductInfo
+      inversedBy: BidsInfo
+      joinColumn:
+        onDelete: "CASCADE"
+        name: pid
+        referencedColumnName: pid
+    lifecycleCallbacks: 
+      prePersist: [ setCreatedOnValue ]
+      preUpdate: [ setUpdatedOnValue ]

@@ -1,0 +1,55 @@
+ReverseAuction\ReverseAuctionBundle\Entity\ProductInfo:
+    type: entity
+    table: null
+    repositoryClass: ReverseAuction\ReverseAuctionBundle\Entity\ProductInfoRepository
+    id:
+        id:
+            type: integer
+            pid: true
+            column: pid
+            generator:
+                strategy: AUTO
+    fields:
+        pName:
+            type: string
+            length: '30'
+            nullable: false
+        pType:
+            type: string
+            length: '30'
+            nullable: false
+        pBrandName:
+            type: string
+            length: '30'
+            nullable: false
+        pRetailPrize:
+            type: string
+            length: '30'
+            nullable: false
+        pImage:
+            type: string
+            length: 255
+            nullable: false
+        pDescription:
+            type: string
+            length: 255
+            nullable: false
+        pBidExpiry:
+            type: datetime
+        createdDate:
+            type: datetime
+        updatedDate:
+            type: datetime
+    oneToMany:
+     BidsInfo:
+      targetEntity: ReverseAuction\ReverseAuctionBundle\Entity\BidsInfo
+      mappedBy: ProductInfo
+     WinnerInfo:
+      targetEntity: ReverseAuction\ReverseAuctionBundle\Entity\WinnerInfo
+      mappedBy: ProductInfo
+    lifecycleCallbacks: 
+      prePersist: [ setCreatedOnValue , preUpload]
+      preUpdate: [ setUpdatedOnValue ,preUpload ]
+      postUpdate: [upload]
+      postPersist: [upload]
+      postRemove: [removeUpload]

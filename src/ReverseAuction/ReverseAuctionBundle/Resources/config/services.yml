@@ -1,0 +1,7 @@
+parameters:
+#    reverse_auction_reverse_auction.example.class: ReverseAuction\ReverseAuctionBundle\Example
+
+services:
+#    reverse_auction_reverse_auction.example:
+#        class: %reverse_auction_reverse_auction.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

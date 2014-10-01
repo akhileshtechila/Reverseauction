@@ -1,0 +1,30 @@
+logininfo:
+    path:     /
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:LoginInfo:index" }
+
+logininfo_show:
+    path:     /{id}/show
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:LoginInfo:show" }
+
+logininfo_new:
+    path:     /new
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:LoginInfo:new" }
+
+logininfo_create:
+    path:     /create
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:LoginInfo:create" }
+    requirements: { _method: post }
+
+logininfo_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:LoginInfo:edit" }
+
+logininfo_update:
+    path:     /{id}/update
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:LoginInfo:update" }
+    requirements: { _method: post|put }
+
+logininfo_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:LoginInfo:delete" }
+    requirements: { _method: post|delete }

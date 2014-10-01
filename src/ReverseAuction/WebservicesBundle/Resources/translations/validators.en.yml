@@ -1,0 +1,29 @@
+users.blank.email: Email Should not be blank.
+users.unique.email: This Email is Unique.
+users.blank.firstname: Please Enter First Name.
+users.error.firstname_min: First Name must be 3 character length.
+users.error.firstname_max: First Name cannot be longer than 100 characters length.
+users.blank.lastname:  Please enter Last Name.
+users.error.lastname_min: Last Name must be 3 characters length.
+users.error.lastname_max: Last Name cannot be longer than 100 characters length.
+users.blank.contact: Contact No Should not be blank.
+users.error.contact_min: Contact must be at least 10 characters length.
+users.error.contact_max: Contact cannot be longer than 10 characters length.
+users.blank.zipCode: zipCode No Should not be blank.
+users.error.zipCode_min: zipCode must be at least 6 characters length.
+users.error.zipCode_max: zipCode cannot be longer than 6 characters length.
+users.blank.password: Password No Should not be blank.
+
+users.blank.pName: Please Enter Product Name.
+users.error.pName_min: Product Name must be 3 character length.
+users.error.pName_max: Product Name cannot be longer than 100 characters length.
+users.blank.pType:  Please Enter Product Type.
+users.error.pType_min: Product Type must be 3 characters length.
+users.error.pType_max: Product Type cannot be longer than 100 characters length.
+users.blank.pBrandName:  Please Enter Product Brand Name.
+users.error.pBrandName_min: Product Brand Name must be 3 characters length.
+users.error.pBrandName_max: Product Brand Name be longer than 100 characters length.
+users.blank.pRetailPrize: Please Enter Product Retail Prize.
+users.blank.pDescription: Please Enter Product Description.
+users.error.pDescription_min: Product Description must be at least 3 characters length.
+users.error.pDescription_max: Product Description cannot be longer than 300 characters length.

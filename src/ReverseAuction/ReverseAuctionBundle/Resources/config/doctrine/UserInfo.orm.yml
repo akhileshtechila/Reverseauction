@@ -1,0 +1,71 @@
+ReverseAuction\ReverseAuctionBundle\Entity\UserInfo:
+    type: entity
+    table: userinfo
+    repositoryClass: ReverseAuction\ReverseAuctionBundle\Entity\UserInfoRepository
+    id:
+        id:
+            type: integer
+            userid: true
+            column: userid
+            generator:
+                strategy: AUTO
+    fields:
+        fName:
+            type: string
+            length: '30'
+            nullable: false
+        lName:
+            type: string
+            length: '30'
+            nullable: false
+        email:
+            type: string
+            length: '30'
+            nullable: false
+            unique: true
+        address:
+            type: string
+            length: '255'
+            nullable: false
+        city:
+            type: string
+            length: '30'
+            nullable: false
+        state:
+            type: string
+            length: '30'
+            nullable: false
+        country:
+            type: string
+            length: '30'
+            nullable: false
+        zipCode:
+            type: string
+            length: '30'
+            nullable: false
+        mobile:
+            type: string
+            length: '30'
+            nullable: false
+        userType:
+            type: string
+            length: '30'
+            nullable: false
+        createdDate:
+            type: datetime
+        updatedDate:
+            type: datetime
+    oneToOne:
+     LoginInfo:
+      targetEntity: ReverseAuction\ReverseAuctionBundle\Entity\LoginInfo
+      mappedBy: UserInfo
+    oneToMany:
+     BidsInfo:
+      targetEntity: ReverseAuction\ReverseAuctionBundle\Entity\BidsInfo
+      mappedBy: UserInfo
+     WinnerInfo:
+      targetEntity: ReverseAuction\ReverseAuctionBundle\Entity\WinnerInfo
+      mappedBy: UserInfo
+    lifecycleCallbacks: 
+      prePersist: [ setCreatedOnValue ]
+      preUpdate: [ setUpdatedOnValue ]

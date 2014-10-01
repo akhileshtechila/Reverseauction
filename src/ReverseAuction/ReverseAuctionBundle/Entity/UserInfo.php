@@ -1,0 +1,524 @@
+<?php
+
+namespace ReverseAuction\ReverseAuctionBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+/**
+ * @ORM\Entity(repositoryClass="ReverseAuction\ReverseAuctionBundle\Entity\UserInfoRepository")
+ * @UniqueEntity("email" ,message="users.unique.email")
+ * @ORM\HasLifecycleCallbacks()
+ */
+class UserInfo
+{
+    /**
+     * @var integer
+     */
+    private $userid;
+
+    /**
+     * @var string
+     * @Assert\NotBlank(message="users.blank.firstname")
+     * @Assert\Length(
+     *      min = "3",
+     *      max = "100",
+     *      minMessage = "users.error.firstname_min",
+     *      maxMessage = "users.error.firstname_max"
+     * )
+     */
+    private $fName;
+
+    /**
+     * @var string
+     * @Assert\NotBlank(message="users.blank.lastname")
+     */
+    private $lName;
+
+    /**
+     * @var string
+     * @Assert\NotBlank(message="users.blank.email")
+     */
+    private $email;
+
+    /**
+     * @var string
+     */
+    private $state;
+
+    /**
+     * @var string
+     */
+    private $country;
+
+    /**
+     * @var string
+     * @Assert\NotBlank(message="users.blank.zipCode")
+     */
+    private $zipCode;
+
+    /**
+     * @var string
+     * @Assert\NotBlank(message="users.blank.contact")
+     */
+    private $mobile;
+
+    /**
+     * @var string
+     * @Assert\NotBlank(message="User Type is Blank")
+     */
+    private $userType;
+
+    /**
+     * @var \DateTime
+     */
+    private $createdDate;
+
+    /**
+     * @var \DateTime
+     */
+    private $updatedDate;
+
+    /**
+     * @var \ReverseAuction\ReverseAuctionBundle\Entity\LoginInfo
+     */
+    private $LoginInfo;
+
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $BidsInfo;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $WinnerInfo;
+    
+    /**
+     * @var string
+     */
+    private $address;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->BidsInfo = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->WinnerInfo = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Get userid
+     *
+     * @return integer 
+     */
+    public function getUserid()
+    {
+        return $this->userid;
+    }
+
+    /**
+     * Set fName
+     *
+     * @param string $fName
+     * @return UserInfo
+     */
+    public function setFName($fName)
+    {
+        $this->fName = $fName;
+
+        return $this;
+    }
+
+    /**
+     * Get fName
+     *
+     * @return string 
+     */
+    public function getFName()
+    {
+        return $this->fName;
+    }
+
+    /**
+     * Set lName
+     *
+     * @param string $lName
+     * @return UserInfo
+     */
+    public function setLName($lName)
+    {
+        $this->lName = $lName;
+
+        return $this;
+    }
+
+    /**
+     * Get lName
+     *
+     * @return string 
+     */
+    public function getLName()
+    {
+        return $this->lName;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     * @return UserInfo
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string 
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set state
+     *
+     * @param string $state
+     * @return UserInfo
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * Get state
+     *
+     * @return string 
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set country
+     *
+     * @param string $country
+     * @return UserInfo
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get country
+     *
+     * @return string 
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * Set zipCode
+     *
+     * @param string $zipCode
+     * @return UserInfo
+     */
+    public function setZipCode($zipCode)
+    {
+        $this->zipCode = $zipCode;
+
+        return $this;
+    }
+
+    /**
+     * Get zipCode
+     *
+     * @return string 
+     */
+    public function getZipCode()
+    {
+        return $this->zipCode;
+    }
+
+    /**
+     * Set mobile
+     *
+     * @param string $mobile
+     * @return UserInfo
+     */
+    public function setMobile($mobile)
+    {
+        $this->mobile = $mobile;
+
+        return $this;
+    }
+
+    /**
+     * Get mobile
+     *
+     * @return string 
+     */
+    public function getMobile()
+    {
+        return $this->mobile;
+    }
+
+    /**
+     * Set userType
+     *
+     * @param string $userType
+     * @return UserInfo
+     */
+    public function setUserType($userType)
+    {
+        $this->userType = $userType;
+
+        return $this;
+    }
+
+    /**
+     * Get userType
+     *
+     * @return string 
+     */
+    public function getUserType()
+    {
+        return $this->userType;
+    }
+
+    /**
+     * Set createdDate
+     *
+     * @param \DateTime $createdDate
+     * @return UserInfo
+     */
+    public function setCreatedDate($createdDate)
+    {
+        $this->createdDate = $createdDate;
+
+        return $this;
+    }
+
+    /**
+     * Get createdDate
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedDate()
+    {
+        return $this->createdDate;
+    }
+
+    /**
+     * Set updatedDate
+     *
+     * @param \DateTime $updatedDate
+     * @return UserInfo
+     */
+    public function setUpdatedDate($updatedDate)
+    {
+        $this->updatedDate = $updatedDate;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedDate
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedDate()
+    {
+        return $this->updatedDate;
+    }
+
+    /**
+     * Set LoginInfo
+     *
+     * @param \ReverseAuction\ReverseAuctionBundle\Entity\LoginInfo $loginInfo
+     * @return UserInfo
+     */
+    public function setLoginInfo(\ReverseAuction\ReverseAuctionBundle\Entity\LoginInfo $loginInfo = null)
+    {
+        $this->LoginInfo = $loginInfo;
+
+        return $this;
+    }
+
+    /**
+     * Get LoginInfo
+     *
+     * @return \ReverseAuction\ReverseAuctionBundle\Entity\LoginInfo 
+     */
+    public function getLoginInfo()
+    {
+        return $this->LoginInfo;
+    }
+
+    /**
+     * Add BidsInfo
+     *
+     * @param \ReverseAuction\ReverseAuctionBundle\Entity\BidsInfo $bidsInfo
+     * @return UserInfo
+     */
+    public function addBidsInfo(\ReverseAuction\ReverseAuctionBundle\Entity\BidsInfo $bidsInfo)
+    {
+        $this->BidsInfo[] = $bidsInfo;
+
+        return $this;
+    }
+
+    /**
+     * Remove BidsInfo
+     *
+     * @param \ReverseAuction\ReverseAuctionBundle\Entity\BidsInfo $bidsInfo
+     */
+    public function removeBidsInfo(\ReverseAuction\ReverseAuctionBundle\Entity\BidsInfo $bidsInfo)
+    {
+        $this->BidsInfo->removeElement($bidsInfo);
+    }
+
+    /**
+     * Get BidsInfo
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getBidsInfo()
+    {
+        return $this->BidsInfo;
+    }
+
+    /**
+     * Add WinnerInfo
+     *
+     * @param \ReverseAuction\ReverseAuctionBundle\Entity\WinnerInfo $winnerInfo
+     * @return UserInfo
+     */
+    public function addWinnerInfo(\ReverseAuction\ReverseAuctionBundle\Entity\WinnerInfo $winnerInfo)
+    {
+        $this->WinnerInfo[] = $winnerInfo;
+
+        return $this;
+    }
+
+    /**
+     * Remove WinnerInfo
+     *
+     * @param \ReverseAuction\ReverseAuctionBundle\Entity\WinnerInfo $winnerInfo
+     */
+    public function removeWinnerInfo(\ReverseAuction\ReverseAuctionBundle\Entity\WinnerInfo $winnerInfo)
+    {
+        $this->WinnerInfo->removeElement($winnerInfo);
+    }
+
+    /**
+     * Get WinnerInfo
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getWinnerInfo()
+    {
+        return $this->WinnerInfo;
+    }
+   
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedOnValue() {
+
+        $this->createdDate = new \DateTime();
+        $this->updatedDate = new \DateTime();
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdatedOnValue() {
+
+        $this->updatedDate = new \DateTime();
+    }
+    /**
+     * @var integer
+     */
+    private $id;
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    /**
+     * @var string
+     */
+    private $city;
+
+
+    /**
+     * Set city
+     *
+     * @param string $city
+     * @return UserInfo
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    /**
+     * Get city
+     *
+     * @return string 
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * Set address
+     *
+     * @param string $address
+     * @return UserInfo
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return string 
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+}

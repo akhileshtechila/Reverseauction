@@ -1,0 +1,37 @@
+ReverseAuction\ReverseAuctionBundle\Entity\LoginInfo:
+    type: entity
+    table: null
+    repositoryClass: ReverseAuction\ReverseAuctionBundle\Entity\LoginInfoRepository
+    id:
+        id:
+            type: integer
+            loginid: true
+            column: loginid
+            generator:
+                strategy: AUTO
+    fields:
+        email:
+            type: string
+            length: '30'
+        password:
+            type: string
+            length: '100'
+        userType:
+            type: string
+            length: '30'
+            nullable: true
+        createdDate:
+            type: datetime
+        updatedDate:
+            type: datetime
+    oneToOne:
+     UserInfo:
+      targetEntity: ReverseAuction\ReverseAuctionBundle\Entity\UserInfo
+      inversedBy: LoginInfo
+      joinColumn:
+        onDelete: "CASCADE"
+        name: userid
+        referencedColumnName: userid
+    lifecycleCallbacks: 
+      prePersist: [ setCreatedOnValue ]
+      preUpdate: [ setUpdatedOnValue ]

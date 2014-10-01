@@ -1,0 +1,30 @@
+bidsinfo:
+    path:     /
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:BidsInfo:index" }
+
+bidsinfo_show:
+    path:     /{id}/show
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:BidsInfo:show" }
+
+bidsinfo_new:
+    path:     /new
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:BidsInfo:new" }
+
+bidsinfo_create:
+    path:     /create
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:BidsInfo:create" }
+    requirements: { _method: post }
+
+bidsinfo_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:BidsInfo:edit" }
+
+bidsinfo_update:
+    path:     /{id}/update
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:BidsInfo:update" }
+    requirements: { _method: post|put }
+
+bidsinfo_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:BidsInfo:delete" }
+    requirements: { _method: post|delete }

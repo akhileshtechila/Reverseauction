@@ -1,0 +1,30 @@
+userinfo:
+    path:     /
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:UserInfo:index" }
+
+userinfo_show:
+    path:     /{id}/show
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:UserInfo:show" }
+
+userinfo_new:
+    path:     /new
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:UserInfo:new" }
+
+userinfo_create:
+    path:     /create
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:UserInfo:create" }
+    requirements: { _method: post }
+
+userinfo_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:UserInfo:edit" }
+
+userinfo_update:
+    path:     /{id}/update
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:UserInfo:update" }
+    requirements: { _method: post|put }
+
+userinfo_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:UserInfo:delete" }
+    requirements: { _method: post|delete }

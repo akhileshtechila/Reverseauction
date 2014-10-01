@@ -1,0 +1,23 @@
+reverse_auction_webservices_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: ReverseAuctionWebservicesBundle:Default:index }
+
+_registration:
+    path:     /Registration
+    defaults: { _controller: ReverseAuctionWebservicesBundle:Registration:Registration }
+
+_user_login:
+    path:     /UserLogin
+    defaults: { _controller: ReverseAuctionWebservicesBundle:UserLogin:UserLogin }
+
+_forget_password:
+    path:     /ForgetPassword
+    defaults: { _controller: ReverseAuctionWebservicesBundle:ForgetPassword:ForgetPassword }
+
+_product_information:
+    path:     /ProductInformation
+    defaults: { _controller: ReverseAuctionWebservicesBundle:ProductInformation:ProductInformation }
+
+_product_listing:
+    path:     /ProductListing
+    defaults: { _controller: ReverseAuctionWebservicesBundle:ProductListing:ProductListing }

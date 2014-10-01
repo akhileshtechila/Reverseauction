@@ -1,0 +1,60 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>WinnerInfo</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Wusername</th>
+                <td>{{ entity.wUserName }}</td>
+            </tr>
+            <tr>
+                <th>Wproductname</th>
+                <td>{{ entity.wProductName }}</td>
+            </tr>
+            <tr>
+                <th>Ptype</th>
+                <td>{{ entity.pType }}</td>
+            </tr>
+            <tr>
+                <th>Pbrandname</th>
+                <td>{{ entity.pBrandName }}</td>
+            </tr>
+            <tr>
+                <th>Pretailprize</th>
+                <td>{{ entity.pRetailPrize }}</td>
+            </tr>
+            <tr>
+                <th>Bidamount</th>
+                <td>{{ entity.bidAmount }}</td>
+            </tr>
+            <tr>
+                <th>Createddate</th>
+                <td>{{ entity.createdDate|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Updateddate</th>
+                <td>{{ entity.updatedDate|date('Y-m-d H:i:s') }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('winnerinfo') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('winnerinfo_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

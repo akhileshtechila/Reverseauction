@@ -1,0 +1,8 @@
+reverse_auction_webservices:
+    resource: "@ReverseAuctionWebservicesBundle/Resources/config/routing.yml"
+    prefix:   /
+
+reverse_auction_reverse_auction:
+    resource: "@ReverseAuctionReverseAuctionBundle/Resources/config/routing.yml"
+    prefix:   /
+

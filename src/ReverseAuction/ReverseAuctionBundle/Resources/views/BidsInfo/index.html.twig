@@ -1,0 +1,51 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>BidsInfo list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Busername</th>
+                <th>Bemail</th>
+                <th>Bproductname</th>
+                <th>Bamount</th>
+                <th>Createddate</th>
+                <th>Updateddate</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('bidsinfo_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.bUserName }}</td>
+                <td>{{ entity.bEmail }}</td>
+                <td>{{ entity.bProductName }}</td>
+                <td>{{ entity.bAmount }}</td>
+                <td>{% if entity.createdDate %}{{ entity.createdDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if entity.updatedDate %}{{ entity.updatedDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('bidsinfo_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('bidsinfo_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('bidsinfo_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

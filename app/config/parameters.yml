@@ -1,0 +1,17 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_driver: pdo_mysql
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: Reverseauction
+    database_user: root
+    database_password: null
+    mailer_transport: gmail
+    mailer_host: smtp.gmail.com
+    mailer_user: akhilesh.techila@gmail.com
+    mailer_password: jitendra1251989
+    locale: en
+    secret: ThisTokenIsNotSoSecretChangeIt
+    debug_toolbar: true
+    debug_redirects: false
+    use_assetic_controller: true

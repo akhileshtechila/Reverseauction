@@ -1,0 +1,55 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>WinnerInfo list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Wusername</th>
+                <th>Wproductname</th>
+                <th>Ptype</th>
+                <th>Pbrandname</th>
+                <th>Pretailprize</th>
+                <th>Bidamount</th>
+                <th>Createddate</th>
+                <th>Updateddate</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('winnerinfo_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.wUserName }}</td>
+                <td>{{ entity.wProductName }}</td>
+                <td>{{ entity.pType }}</td>
+                <td>{{ entity.pBrandName }}</td>
+                <td>{{ entity.pRetailPrize }}</td>
+                <td>{{ entity.bidAmount }}</td>
+                <td>{% if entity.createdDate %}{{ entity.createdDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if entity.updatedDate %}{{ entity.updatedDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('winnerinfo_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('winnerinfo_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('winnerinfo_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

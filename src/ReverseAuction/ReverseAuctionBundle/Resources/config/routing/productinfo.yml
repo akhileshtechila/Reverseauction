@@ -1,0 +1,30 @@
+productinfo:
+    path:     /
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:ProductInfo:index" }
+
+productinfo_show:
+    path:     /{id}/show
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:ProductInfo:show" }
+
+productinfo_new:
+    path:     /new
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:ProductInfo:new" }
+
+productinfo_create:
+    path:     /create
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:ProductInfo:create" }
+    requirements: { _method: post }
+
+productinfo_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:ProductInfo:edit" }
+
+productinfo_update:
+    path:     /{id}/update
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:ProductInfo:update" }
+    requirements: { _method: post|put }
+
+productinfo_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ReverseAuctionReverseAuctionBundle:ProductInfo:delete" }
+    requirements: { _method: post|delete }

@@ -1,0 +1,18 @@
+reverse_auction_reverse_auction_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: ReverseAuctionReverseAuctionBundle:Default:index }
+ReverseAuctionReverseAuctionBundle_bidsinfo:
+    resource: "@ReverseAuctionReverseAuctionBundle/Resources/config/routing/bidsinfo.yml"
+    prefix:   /bidsinfo
+ReverseAuctionReverseAuctionBundle_productinfo:
+    resource: "@ReverseAuctionReverseAuctionBundle/Resources/config/routing/productinfo.yml"
+    prefix:   /productinfo
+ReverseAuctionReverseAuctionBundle_userinfo:
+    resource: "@ReverseAuctionReverseAuctionBundle/Resources/config/routing/userinfo.yml"
+    prefix:   /userinfo
+ReverseAuctionReverseAuctionBundle_winnerinfo:
+    resource: "@ReverseAuctionReverseAuctionBundle/Resources/config/routing/winnerinfo.yml"
+    prefix:   /winnerinfo
+ReverseAuctionReverseAuctionBundle_logininfo:
+    resource: "@ReverseAuctionReverseAuctionBundle/Resources/config/routing/logininfo.yml"
+    prefix:   /logininfo
