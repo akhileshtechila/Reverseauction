@@ -31,18 +31,6 @@ class RegistrationController extends Controller {
           } else {
           return new JsonResponse($this->noPostData());
           } 
-        
-          /*$fName = "Akhilesh";
-          $lName = "Dahat";
-          $email = "akhileshdahat@gmail.com";
-          $state = "jjjdhfjh";
-          $address = "sdfsdf";
-          $country = "sdfdsf";
-          $zipCode = "440026";
-          $mobile = "9561800766";
-          $city = "pune";
-          $userType = "Bidder";*/
-
         if ($email == "") {
             $errorMsg = "Email Id Empty";
             return new JsonResponse($this->blankField($errorMsg));

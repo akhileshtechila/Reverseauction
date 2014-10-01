@@ -37,13 +37,14 @@ class EditUserController extends Controller {
         } else {
             return new JsonResponse($this->noPostData());
         } 
-            
+          
         if ($userId == "") {
             $errorMsg = "User Id Empty";
             return new JsonResponse($this->blankField($errorMsg));
         } else {
             $className = "ReverseAuctionReverseAuctionBundle:UserInfo";
             $userInfo = $em->getRepository($className)->find($userId);
+           
             $userInfo->setFName($fName);
             $userInfo->setLName($lName);
             $userInfo->setEmail($email);
@@ -79,8 +80,7 @@ class EditUserController extends Controller {
             if ($userInfo->getId() != "") {
                 $className = "ReverseAuctionReverseAuctionBundle:LoginInfo";
                 $LoginInfo = $em->getRepository($className)->findOneBy(array('email' => $userInfo->getEmail() ));
-               
-                
+                              
                 $LoginInfo->setPassword(md5($password));
                 $em->flush();
 
@@ -88,8 +88,8 @@ class EditUserController extends Controller {
                     /* User Information */
                     $email = $LoginInfo->getEmail();
 
-                    $fName = $userInfo->getFName($fName);
-                    $lName = $userInfo->getLName($lName);
+                    $fName = $LoginInfo->getUserInfo()->getFName();
+                    $lName = $LoginInfo->getUserInfo()->getLName();;
 
                     if ($email != '' || $email != null) {
                         $adminemail = $this->container->getParameter('admin_email');
@@ -104,7 +104,8 @@ class EditUserController extends Controller {
                                     'fName' => $fName,
                                     'lName' => $lName,
                                     'username' => $email,
-                                    'password' => $password
+                                    'password' => $password,
+                                    'entity'  => $userInfo
                                         )
                                 )
                         );
