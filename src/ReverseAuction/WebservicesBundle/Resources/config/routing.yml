@@ -21,3 +21,6 @@ _product_information:
 _product_listing:
     path:     /ProductListing
     defaults: { _controller: ReverseAuctionWebservicesBundle:ProductListing:ProductListing }
+_edit_user:
+    path:     /EditUser
+    defaults: { _controller: ReverseAuctionWebservicesBundle:EditUser:EditUser }

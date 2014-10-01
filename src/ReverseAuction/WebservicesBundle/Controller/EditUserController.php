@@ -11,71 +11,39 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use ReverseAuction\ReverseAuctionBundle\Entity\UserInfo;
 use ReverseAuction\ReverseAuctionBundle\Entity\LoginInfo;
 
-class RegistrationController extends Controller {
+class EditUserController extends Controller {
 
-    public function RegistrationAction(Request $request) {
+    public function EditUserAction(Request $request) {
+
         $em = $this->getDoctrine()->getManager();
 
         /* Check The request is Post */
-         if ($request->getMethod() == "POST") {          
-          $fName = $request->get('fName');
-          $lName = $request->get('lName');
-          $email = $request->get('email');
-          $state = $request->get('state');
-          $address = $request->get('address');
-          $country = $request->get('country');
-          $zipCode = $request->get('zipCode');
-          $mobile = $request->get('mobile');
-          $city = $request->get('city');
-          $userType = $request->get('userType');
-          } else {
-          return new JsonResponse($this->noPostData());
-          } 
-        
-          /*$fName = "Akhilesh";
-          $lName = "Dahat";
-          $email = "akhileshdahat@gmail.com";
-          $state = "jjjdhfjh";
-          $address = "sdfsdf";
-          $country = "sdfdsf";
-          $zipCode = "440026";
-          $mobile = "9561800766";
-          $city = "pune";
-          $userType = "Bidder";*/
 
-        if ($email == "") {
-            $errorMsg = "Email Id Empty";
-            return new JsonResponse($this->blankField($errorMsg));
-        } else if ($fName == "") {
-            $errorMsg = "First Name Empty";
-            return new JsonResponse($this->blankField($errorMsg));
-        } else if ($lName == "") {
-            $errorMsg = "Last Name Empty";
-            return new JsonResponse($this->blankField($errorMsg));
-        } else if ($state == "") {
-            $errorMsg = "State Empty";
-            return new JsonResponse($this->blankField($errorMsg));
-        } else if ($mobile == "") {
-            $errorMsg = "Mobile no Empty";
-            return new JsonResponse($this->blankField($errorMsg));
-        } else if ($userType == "") {
-            $errorMsg = "User Type Empty";
-            return new JsonResponse($this->blankField($errorMsg));
-        } else if ($country == "") {
-            $errorMsg = "Country Empty";
-            return new JsonResponse($this->blankField($errorMsg));
-        } else if ($zipCode == "") {
-            $errorMsg = "ZipCode is Empty";
-            return new JsonResponse($this->blankField($errorMsg));
-        } else if ($city== "") {
-            $errorMsg = "City is Empty";
-            return new JsonResponse($this->blankField($errorMsg));
-        } else if ($address== "") {
-            $errorMsg = "Address is Empty";
+        if ($request->getMethod() == "POST") {
+            $fName = $request->get('fName');
+            $lName = $request->get('lName');
+            $email = $request->get('email');
+            $state = $request->get('state');
+            $address = $request->get('address');
+            $country = $request->get('country');
+            $zipCode = $request->get('zipCode');
+            $password = $request->get('password');
+            $confirmPassword = $request->get('confirmPassword');
+            $mobile = $request->get('mobile');
+            $city = $request->get('city');
+            $userType = $request->get('userType');
+            $userId = $request->get('userId');
+            //$userId = "17";
+        } else {
+            return new JsonResponse($this->noPostData());
+        } 
+            
+        if ($userId == "") {
+            $errorMsg = "User Id Empty";
             return new JsonResponse($this->blankField($errorMsg));
         } else {
-
-            $userInfo = new UserInfo();
+            $className = "ReverseAuctionReverseAuctionBundle:UserInfo";
+            $userInfo = $em->getRepository($className)->find($userId);
             $userInfo->setFName($fName);
             $userInfo->setLName($lName);
             $userInfo->setEmail($email);
@@ -87,43 +55,38 @@ class RegistrationController extends Controller {
             $userInfo->setCountry($country);
             $userInfo->setCity($city);
 
-            $validator = $this->get('validator');
-            $errors = $validator->validate($userInfo);
-            $result = array();
-            if (count($errors) > 0) {
-                //$errorsString = (string) $errors;
-                foreach ($errors as $error) {
-                    $result[] = $this->get('translator')->trans($error->getMessage());
-                }
-                $data = array();
-                $data['errorMessage'] = "Duplicate Entries";
-                $data['errorCode'] = "4";
-                $data['result'] = $result;
+            /*  $validator = $this->get('validator');
+              $errors = $validator->validate($userInfo);
+              $result = array();
+              if (count($errors) > 0) {
+              //$errorsString = (string) $errors;
+              foreach ($errors as $error) {
+              $result[] = $this->get('translator')->trans($error->getMessage());
+              }
+              $data = array();
+              $data['errorMessage'] = "Duplicate Entries";
+              $data['errorCode'] = "4";
+              $data['result'] = $result;
 
-                $mainData = array();
-                $mainData['data'] = $data;
+              $mainData = array();
+              $mainData['data'] = $data;
 
-                return new JsonResponse($mainData);
-            }
+              return new JsonResponse($mainData);
+              } */
 
-            $em->persist($userInfo);
             $em->flush();
 
             if ($userInfo->getId() != "") {
-
-                $randpassword = $this->gen_random_password(8);
-
-                $LoginInfo = new LoginInfo();
-                $LoginInfo->setEmail($userInfo->getEmail());
-                $LoginInfo->setUserInfo($userInfo);
-                $LoginInfo->setPassword(md5($randpassword));
-                $em->persist($LoginInfo);
+                $className = "ReverseAuctionReverseAuctionBundle:LoginInfo";
+                $LoginInfo = $em->getRepository($className)->findOneBy(array('email' => $userInfo->getEmail() ));
+               
+                
+                $LoginInfo->setPassword(md5($password));
                 $em->flush();
 
                 if ($LoginInfo->getId() != "") {
                     /* User Information */
                     $email = $LoginInfo->getEmail();
-                    $password = $randpassword;
 
                     $fName = $userInfo->getFName($fName);
                     $lName = $userInfo->getLName($lName);
@@ -131,13 +94,13 @@ class RegistrationController extends Controller {
                     if ($email != '' || $email != null) {
                         $adminemail = $this->container->getParameter('admin_email');
                         $message = \Swift_Message::newInstance()
-                                ->setSubject('Registration User')
+                                ->setSubject('User Information Updated')
                                 ->setFrom($adminemail)
                                 ->setTo($email)
                                 ->setContentType("text/html")
                                 ->setBody(
                                 $this->renderView(
-                                    'ReverseAuctionWebservicesBundle:Registration:email.html.twig', array(
+                                    'ReverseAuctionWebservicesBundle:EditUser:email.html.twig', array(
                                     'fName' => $fName,
                                     'lName' => $lName,
                                     'username' => $email,
@@ -148,7 +111,6 @@ class RegistrationController extends Controller {
                     }
                 }
                 if ($this->get('mailer')->send($message)) {
-                    
                     $dataQuery['userId'] = $userInfo->getId();
                     $dataQuery['email'] = $userInfo->getEmail();
                     $dataQuery['fName'] = $fName;
@@ -161,7 +123,7 @@ class RegistrationController extends Controller {
                     $dataQuery['country'] = $userInfo->getCountry();
                     $dataQuery['zipCode'] = $userInfo->getZipCode();
                     $dataQuery['mobile'] = $userInfo->getMobile();
-                    
+
                     return new JsonResponse($this->userSuccesfullyInserted($dataQuery));
                 } else {
                     return new JsonResponse($this->userUnsuccessful());
@@ -173,7 +135,7 @@ class RegistrationController extends Controller {
         }
 
 
-        return $this->render('ReverseAuctionWebservicesBundle:Registration:Registration.html.twig');
+        return $this->render('ReverseAuctionWebservicesBundle:EditUser:EditUser.html.twig');
     }
 
     private function userSuccesfullyInserted($dataQuery) {
@@ -220,15 +182,6 @@ class RegistrationController extends Controller {
         $mainData = array();
         $mainData['data'] = $data;
         return $mainData;
-    }
-
-    private function gen_random_password($length = 8) {
-        $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@#_&$*[]!%abcdefghijklmnopqrstuvwxyz";
-        $final_rand = '';
-        for ($i = 0; $i < $length; $i++) {
-            $final_rand .= $chars[rand(0, strlen($chars) - 1)];
-        }
-        return $final_rand;
     }
 
 }

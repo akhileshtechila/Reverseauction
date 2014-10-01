@@ -1,6 +1,6 @@
 ReverseAuction\ReverseAuctionBundle\Entity\UserInfo:
     type: entity
-    table: userinfo
+    table: null
     repositoryClass: ReverseAuction\ReverseAuctionBundle\Entity\UserInfoRepository
     id:
         id:
