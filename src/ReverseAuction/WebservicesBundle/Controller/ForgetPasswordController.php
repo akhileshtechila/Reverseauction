@@ -15,15 +15,15 @@ class ForgetPasswordController extends Controller {
 
     public function ForgetPasswordAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-       /* if ($request->getMethod() == "POST") {
+        if ($request->getMethod() == "POST") {
             // Get the Posted Data From the IOS device
             $email = $request->get('email');
             //$password = $request->get('password');
             //$confirmPassword = $request->get('confirmPassword');
         } else {
             return new JsonResponse($this->noJsonData());
-        }*/
-        $email = "akhilesh.techila@gmail.com";
+        }
+       // $email = "akhilesh.techila@gmail.com";
         if ($email == "") {
             $errorMsg = "Email is Empty";
             return new JsonResponse($this->blankField($errorMsg));

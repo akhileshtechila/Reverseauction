@@ -24,3 +24,7 @@ _product_listing:
 _edit_user:
     path:     /EditUser
     defaults: { _controller: ReverseAuctionWebservicesBundle:EditUser:EditUser }
+
+_apply_bids:
+    path:     /ApplyBids
+    defaults: { _controller: ReverseAuctionWebservicesBundle:ApplyBids:ApplyBids }

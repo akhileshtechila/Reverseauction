@@ -1,0 +1,208 @@
+<?php
+
+namespace ReverseAuction\WebservicesBundle\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use ReverseAuction\ReverseAuctionBundle\Entity\ProductInfo;
+use ReverseAuction\ReverseAuctionBundle\Entity\BidsInfo;
+use ReverseAuction\ReverseAuctionBundle\Entity\UserInfo;
+
+/**
+ * ApplyBids Controller.
+ * Author Name: Akhilesh Dahat
+ * Date: 08 Sept 2014
+ * Description: Apply the Bids from the User with the Current available products.
+ */
+class ApplyBidsController extends Controller {
+
+    /**
+     * Apply The Bids from the User With the Relevant INformation.
+     *
+     */
+    public function ApplyBidsAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+
+        /* Check The request is Post */
+        if ($request->getMethod() == "POST") {
+            $userId = $request->get('userId');
+            $productId = $request->get('productId');
+            $bEmail = $request->get('bEmail');
+            $bProductName = $request->get('bProductName');
+            $bAmount = $request->get('bAmount');
+        } else {
+            /* Return if the request is not post */
+            return new JsonResponse($this->noPostData());
+        }
+        /* Validation  For the User Input */
+        if ($userId == "") {
+            $errorMsg = "UserID Empty";
+            return new JsonResponse($this->blankField($errorMsg));
+        } else if ($productId == "") {
+            $errorMsg = "ProductId is Empty";
+            return new JsonResponse($this->blankField($errorMsg));
+        } else if ($bEmail == "") {
+            $errorMsg = "User Name Empty";
+            return new JsonResponse($this->blankField($errorMsg));
+        } else if ($bProductName == "") {
+            $errorMsg = "Product Name is Empty";
+            return new JsonResponse($this->blankField($errorMsg));
+        } else if ($bAmount == "") {
+            $errorMsg = "Bid Amount is Empty";
+            return new JsonResponse($this->blankField($errorMsg));
+        } else {
+
+            /* Find the User Object from the UserInfo Entity */
+
+            $classUserInfoName = "ReverseAuctionReverseAuctionBundle:UserInfo";
+            $userInfo = $em->getRepository($classUserInfoName)->find($userId);
+
+            /* Find the Product Object from the ProductInfo Entity */
+            $classProductInfoName = "ReverseAuctionReverseAuctionBundle:ProductInfo";
+            $productInfo = $em->getRepository($classProductInfoName)->find($productId);
+
+            /* Instantiate the BidsInfo and the Set the Variables into the Settter's */
+
+            $BidsInfo = new BidsInfo();
+            $BidsInfo->setUserInfo($userInfo);
+            $BidsInfo->setProductInfo($productInfo);
+            $BidsInfo->setBEmail($bEmail);
+            $BidsInfo->setBUserName($bEmail);
+            $BidsInfo->setBProductName($bProductName);
+            $BidsInfo->setBAmount($bAmount);
+
+            /* Validate the Object by the Validator */
+            $validator = $this->get('validator');
+            $errors = $validator->validate($BidsInfo);
+            $result = array();
+            if (count($errors) > 0) {
+                /* Iterate over the Errors Object */
+                foreach ($errors as $error) {
+                    $result[] = $this->get('translator')->trans($error->getMessage());
+                }
+                $data = array();
+                $data['message'] = "Duplicate Entries";
+                $data['code'] = "4";
+                $data['result'] = $result;
+
+                $mainData = array();
+                $mainData['data'] = $data;
+
+                /* Return The Json Response with the Result and Error Code */
+                return new JsonResponse($mainData);
+            }
+
+            /* Persist the Object */
+            $em->persist($BidsInfo);
+            $em->flush();
+
+            /* Check Whether the Record is inserted. */
+            if ($BidsInfo->getId() != "") {
+                /* Get The Email from the BidsInfo Object */
+                $emailFound = $BidsInfo->getBEmail();
+                if ($emailFound != '' || $emailFound != null) {
+                    
+                    /* Get The First Name and Last Name from the BidsInfo object */
+                    $fName = $BidsInfo->getUserInfo()->getFName();
+                    $lName = $BidsInfo->getUserInfo()->getLName();
+
+                    /* Get the Parameters from the Parameters.yml from the app */
+                    $adminemail = $this->container->getParameter('admin_email');
+                    
+                    /* Message Template */
+                    $message = \Swift_Message::newInstance()
+                            ->setSubject('Bids Apply Successfully!')
+                            ->setFrom($adminemail)
+                            ->setTo($emailFound)
+                            ->setContentType("text/html")
+                            ->setBody(
+                            $this->renderView(
+                                    'ReverseAuctionWebservicesBundle:ApplyBids:email.html.twig', array(
+                                'fName' => $fName,
+                                'lName' => $lName,
+                                'BidsInfo' => $BidsInfo
+                                    )
+                            )
+                    );
+                }
+                /* Message Template End */
+                
+                /* Send the Mail */
+                if ($this->get('mailer')->send($message)) {
+                    
+                    $dataQuery['userId'] = $BidsInfo->getUserInfo()->getId();
+                    $dataQuery['productInfo'] = $BidsInfo->getBProductName();
+                    $dataQuery['email'] = $BidsInfo->getBEmail();
+                    $dataQuery['bAmount'] = $BidsInfo->getBAmount();
+                    
+                    /* Send the Json Response with the DataQuery. */
+                    return new JsonResponse($this->bidsApplySuccessFully($dataQuery));
+                } else {
+                    return new JsonResponse($this->bidsUnsuccessful());
+                }
+                return new JsonResponse($this->bidsUnsuccessful());
+            }
+            return new JsonResponse($this->bidsUnsuccessful());
+        }
+        return $this->render('ReverseAuctionWebservicesBundle:ApplyBids:ApplyBids.html.twig');
+    }
+
+    /* After Successfully insertion of the Bid send the Json Response */
+
+    private function bidsApplySuccessFully($dataQuery) {
+        $data = array();
+
+        $data['errorCode'] = "0";
+        $data['errorMessage'] = "Success";
+        $data['result'] = $dataQuery;
+
+        $mainData = array();
+        $mainData['data'] = $data;
+
+        return $mainData;
+    }
+
+    /* Send the Json Response For the Unsuccessfull Information obtain. */
+
+    public function bidsUnsuccessful() {
+        $data = array();
+        $data['errorCode'] = "1";
+        $data['errorMessage'] = "Bids information is missing";
+        $data['result'] = "";
+
+        $mainData = array();
+        $mainData['data'] = $data;
+        return $mainData;
+    }
+
+    /* Error Checking for the Blank Field. */
+
+    private function blankField($errorMsg) {
+        $data = array();
+        $data['errorCode'] = "2";
+        $data['errorMessage'] = $errorMsg;
+        $data['result'] = "";
+
+        $mainData = array();
+        $mainData['data'] = $data;
+        return $mainData;
+    }
+
+    /* Check for the Post Data */
+
+    private function noPostData() {
+        $data = array();
+        $data['errorCode'] = "3";
+        $data['errorMessage'] = "No Post Data";
+        $data['result'] = "";
+
+        $mainData = array();
+        $mainData['data'] = $data;
+        return $mainData;
+    }
+
+}

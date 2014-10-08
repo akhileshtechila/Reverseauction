@@ -11,13 +11,27 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use ReverseAuction\ReverseAuctionBundle\Entity\ProductInfo;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+
+/**
+ * Product Information Controller.
+ * Author Name: Akhilesh Dahat
+ * Date: 08 Sept 2014
+ * Description: Product Information with the User Input and Product image upload from the Webservices..
+ */
 class ProductInformationController extends Controller {
 
+    
+    /**
+     * Product Information Controller Action To add the product
+     *
+     */    
     public function ProductInformationAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
 
         /* Check The request is Post */
         if ($request->getMethod() == "POST") {
+            
+            // Get the Posted Data From the Android device
             $pName = $request->get('pName');
             $pType = $request->get('pType');
             $pBrandName = $request->get('pBrandName');
@@ -26,9 +40,11 @@ class ProductInformationController extends Controller {
             $pDescription = $request->get('pDescription');
             $pBidExpiry = $request->get('pBidExpiry');
         } else {
+             /* Return if the request is not post */
             return new JsonResponse($this->noPostData());
         }
-
+        
+       /* Validation the Blank input For the User Input */
         if ($pName == "") {
             $errorMsg = "Product Name Empty";
             return new JsonResponse($this->blankField($errorMsg));
@@ -51,7 +67,8 @@ class ProductInformationController extends Controller {
             $errorMsg = "Product Bid Expiry Empty";
             return new JsonResponse($this->blankField($errorMsg));
         } else {
-
+            
+            /* Instantiate the ProductInfo and the Set the Variables into the Setter's */
             $ProductInfo = new ProductInfo();
             $ProductInfo->setPName($pName);
             $ProductInfo->setPType($pType);
@@ -61,11 +78,14 @@ class ProductInformationController extends Controller {
             $ProductInfo->setPDescription($pDescription);
             $ProductInfo->setPBidExpiry($pBidExpiry);
 
+            /* Validation the for the Entity Validation and Messages */
             $validator = $this->get('validator');
             $errors = $validator->validate($ProductInfo);
             $result = array();
             if (count($errors) > 0) {
                 //$errorsString = (string) $errors;
+                
+                /*Iterate Over the Errors object*/
                 foreach ($errors as $error) {
                     $result[] = $this->get('translator')->trans($error->getMessage());
                 }
@@ -79,12 +99,12 @@ class ProductInformationController extends Controller {
 
                 return new JsonResponse($mainData);
             }
-
+            /*Persist The Object*/
             $em->persist($ProductInfo);
             $em->flush();
 
             if ($ProductInfo->getId() != "") {
-
+                /* Send the Json Response with the Product added successfully. */
                 return new JsonResponse($this->productAddedsuccessfully());
             }
 
@@ -96,6 +116,8 @@ class ProductInformationController extends Controller {
         return $this->render('ReverseAuctionWebservicesBundle:ProductInformation:ProductInformation.html.twig');
     }
 
+    
+    /* After Successfully insertion of the Bid send the Json Response */
     private function productAddedsuccessfully() {
         $data = array();
 
@@ -109,6 +131,8 @@ class ProductInformationController extends Controller {
         return $mainData;
     }
 
+    
+    /* Send the Json Response For the Unsuccessfull Information obtain. */
     private function productUnsuccessful() {
         $data = array();
 
@@ -122,6 +146,7 @@ class ProductInformationController extends Controller {
         return $mainData;
     }
 
+    /* Error Checking for the Blank Field. */
     private function blankField($errorMsg) {
         $data = array();
         $data['errorCode'] = "2";
@@ -133,6 +158,7 @@ class ProductInformationController extends Controller {
         return $mainData;
     }
 
+    /* Check for the Post Data */
     private function noPostData() {
         $data = array();
         $data['errorCode'] = "3";

@@ -11,8 +11,20 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use ReverseAuction\ReverseAuctionBundle\Entity\UserInfo;
 use ReverseAuction\ReverseAuctionBundle\Entity\LoginInfo;
 
+
+/**
+ * Product Listing Controller.
+ * Author Name: Akhilesh Dahat
+ * Date: 08 Sept 2014
+ * Description: Registartion Controller for the User and Admin Registration Webservices.
+ */
+
 class RegistrationController extends Controller {
 
+    /**
+     * Registartion Controller and Json response with the Object.
+     *
+     */
     public function RegistrationAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
 
@@ -29,8 +41,11 @@ class RegistrationController extends Controller {
           $city = $request->get('city');
           $userType = $request->get('userType');
           } else {
-          return new JsonResponse($this->noPostData());
+             /* Return if the request is not post */
+             return new JsonResponse($this->noPostData());
           } 
+         
+        /* Validation  For the User Input */
         if ($email == "") {
             $errorMsg = "Email Id Empty";
             return new JsonResponse($this->blankField($errorMsg));
@@ -63,6 +78,7 @@ class RegistrationController extends Controller {
             return new JsonResponse($this->blankField($errorMsg));
         } else {
 
+      /* Instantiate the UserInfo and the Set the Variables into the Setter's */
             $userInfo = new UserInfo();
             $userInfo->setFName($fName);
             $userInfo->setLName($lName);
@@ -75,11 +91,14 @@ class RegistrationController extends Controller {
             $userInfo->setCountry($country);
             $userInfo->setCity($city);
 
+            /*Validator for the Entity Validation*/
             $validator = $this->get('validator');
             $errors = $validator->validate($userInfo);
             $result = array();
             if (count($errors) > 0) {
                 //$errorsString = (string) $errors;
+                
+                /*Iterate the Errors*/
                 foreach ($errors as $error) {
                     $result[] = $this->get('translator')->trans($error->getMessage());
                 }
@@ -94,13 +113,16 @@ class RegistrationController extends Controller {
                 return new JsonResponse($mainData);
             }
 
+            /*Persist The object*/
             $em->persist($userInfo);
             $em->flush();
 
             if ($userInfo->getId() != "") {
 
+                /*Generate the Random password */
                 $randpassword = $this->gen_random_password(8);
 
+    /* Instantiate the LoginInfo and the Set the Variables into the Setter's */ 
                 $LoginInfo = new LoginInfo();
                 $LoginInfo->setEmail($userInfo->getEmail());
                 $LoginInfo->setUserInfo($userInfo);
@@ -116,6 +138,7 @@ class RegistrationController extends Controller {
                     $fName = $userInfo->getFName($fName);
                     $lName = $userInfo->getLName($lName);
 
+                    /*Set the mail*/
                     if ($email != '' || $email != null) {
                         $adminemail = $this->container->getParameter('admin_email');
                         $message = \Swift_Message::newInstance()
@@ -135,6 +158,8 @@ class RegistrationController extends Controller {
                         );
                     }
                 }
+                
+                /*Send the Mail*/
                 if ($this->get('mailer')->send($message)) {
                     
                     $dataQuery['userId'] = $userInfo->getId();
@@ -148,8 +173,9 @@ class RegistrationController extends Controller {
                     $dataQuery['city'] = $userInfo->getCity();
                     $dataQuery['country'] = $userInfo->getCountry();
                     $dataQuery['zipCode'] = $userInfo->getZipCode();
-                    $dataQuery['mobile'] = $userInfo->getMobile();
+                    $dataQuery['mobile'] = $userInfo->getMobile();                    
                     
+                    /*Send the Json response*/
                     return new JsonResponse($this->userSuccesfullyInserted($dataQuery));
                 } else {
                     return new JsonResponse($this->userUnsuccessful());
@@ -164,6 +190,7 @@ class RegistrationController extends Controller {
         return $this->render('ReverseAuctionWebservicesBundle:Registration:Registration.html.twig');
     }
 
+    /*Return the Response For Success*/
     private function userSuccesfullyInserted($dataQuery) {
         $data = array();
 
@@ -177,6 +204,8 @@ class RegistrationController extends Controller {
         return $mainData;
     }
 
+    
+    /*Return the Response with the Unsuccessful message*/
     public function userUnsuccessful() {
         $data = array();
         $data['errorCode'] = "1";
@@ -188,6 +217,7 @@ class RegistrationController extends Controller {
         return $mainData;
     }
 
+    /* Error Checking for the Blank Field. */
     private function blankField($errorMsg) {
         $data = array();
         $data['errorCode'] = "2";
@@ -199,6 +229,7 @@ class RegistrationController extends Controller {
         return $mainData;
     }
 
+    /* Check for the Post Data */
     private function noPostData() {
         $data = array();
         $data['errorCode'] = "3";
@@ -210,6 +241,7 @@ class RegistrationController extends Controller {
         return $mainData;
     }
 
+    /*Method for the Generation of the Random passsword.*/
     private function gen_random_password($length = 8) {
         $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@#_&$*[]!%abcdefghijklmnopqrstuvwxyz";
         $final_rand = '';
