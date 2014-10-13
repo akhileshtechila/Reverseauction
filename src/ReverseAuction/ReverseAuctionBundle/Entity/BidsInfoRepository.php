@@ -12,4 +12,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class BidsInfoRepository extends EntityRepository
 {
+    
+     public function findbidWinnerQuery($productId) {
+              return $this->getEntityManager()
+                        ->createQuery("SELECT w FROM ReverseAuctionReverseAuctionBundle:BidsInfo w where w.ProductInfo = $productId GROUP BY w.bAmount HAVING COUNT(w) = 1")
+                        ->setMaxResults(1)     
+                        ->getResult() 
+                     
+                ;
+    }
 }

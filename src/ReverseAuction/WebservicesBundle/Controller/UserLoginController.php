@@ -64,11 +64,12 @@ class UserLoginController extends Controller {
                 return new JsonResponse($this->loginUnsuccessful());
             }
             /* Get the Information into the array */
-            $dataQuery['userId'] = $dataQueryInfo->getId();
+            $dataQuery['userId'] = $dataQueryInfo->getUserInfo()->getId();
             $dataQuery['email'] = $dataQueryInfo->getEmail();
             $dataQuery['userType'] = $dataQueryInfo->getUserInfo()->getUserType();
             $dataQuery['fName'] = $dataQueryInfo->getUserInfo()->getFName();
             $dataQuery['lName'] = $dataQueryInfo->getUserInfo()->getLName();
+            $dataQuery['bidPoints'] = $dataQueryInfo->getUserInfo()->getBidPoints();
 
              /* Pass the Information into the array after the Login Successfull */
             return new JsonResponse($this->loginSuccess($dataQuery));

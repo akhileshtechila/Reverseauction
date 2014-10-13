@@ -90,6 +90,7 @@ class RegistrationController extends Controller {
             $userInfo->setMobile($mobile);
             $userInfo->setCountry($country);
             $userInfo->setCity($city);
+            $userInfo->setBidPoints(10);
 
             /*Validator for the Entity Validation*/
             $validator = $this->get('validator');
@@ -173,7 +174,8 @@ class RegistrationController extends Controller {
                     $dataQuery['city'] = $userInfo->getCity();
                     $dataQuery['country'] = $userInfo->getCountry();
                     $dataQuery['zipCode'] = $userInfo->getZipCode();
-                    $dataQuery['mobile'] = $userInfo->getMobile();                    
+                    $dataQuery['mobile'] = $userInfo->getMobile(); 
+                    $dataQuery['bidPoints'] = $userInfo->getBidPoints();
                     
                     /*Send the Json response*/
                     return new JsonResponse($this->userSuccesfullyInserted($dataQuery));

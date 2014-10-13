@@ -490,4 +490,32 @@ class ProductInfo {
         $this->updatedDate = new \DateTime();
     }
 
+    /**
+     * @var boolean
+     */
+    private $mailsendflag;
+
+
+    /**
+     * Set mailsendflag
+     *
+     * @param boolean $mailsendflag
+     * @return ProductInfo
+     */
+    public function setMailsendflag($mailsendflag)
+    {
+        $this->mailsendflag = $mailsendflag;
+
+        return $this;
+    }
+
+    /**
+     * Get mailsendflag
+     *
+     * @return boolean 
+     */
+    public function getMailsendflag()
+    {
+        return $this->mailsendflag;
+    }
 }

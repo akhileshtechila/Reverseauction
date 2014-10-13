@@ -28,3 +28,7 @@ _edit_user:
 _apply_bids:
     path:     /ApplyBids
     defaults: { _controller: ReverseAuctionWebservicesBundle:ApplyBids:ApplyBids }
+
+_bids_winners:
+    path:     /BidsWinners
+    defaults: { _controller: ReverseAuctionWebservicesBundle:BidWinners:BidsWinners }

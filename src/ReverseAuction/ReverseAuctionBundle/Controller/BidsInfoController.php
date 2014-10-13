@@ -23,7 +23,7 @@ class BidsInfoController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('ReverseAuctionReverseAuctionBundle:BidsInfo')->findAll();
+        $entities = $em->getRepository('ReverseAuctionReverseAuctionBundle:BidsInfo')->findbidWinnerQuery(10);
 
         return $this->render('ReverseAuctionReverseAuctionBundle:BidsInfo:index.html.twig', array(
             'entities' => $entities,

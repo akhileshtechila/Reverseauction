@@ -41,6 +41,7 @@ class ProductInfoController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $entity->setMailsendflag(0);
             $em->persist($entity);
             $em->flush();
 

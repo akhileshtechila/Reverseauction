@@ -36,6 +36,11 @@ ReverseAuction\ReverseAuctionBundle\Entity\ProductInfo:
             nullable: false
         pBidExpiry:
             type: datetime
+        mailsendflag:
+            type: boolean
+            nullable: false
+            options: 
+              default: false
         createdDate:
             type: datetime
         updatedDate:

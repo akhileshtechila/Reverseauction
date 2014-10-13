@@ -51,6 +51,10 @@ ReverseAuction\ReverseAuctionBundle\Entity\UserInfo:
             type: string
             length: '30'
             nullable: false
+        bidPoints:
+            type: string
+            length: '30'
+            nullable: false
         createdDate:
             type: datetime
         updatedDate:

@@ -1,6 +1,10 @@
 <?php
+namespace ReverseAuction\WebservicesBundle\Command;
 
-namespace ReverseAuction\WebservicesBundle\Controller;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -11,24 +15,26 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use ReverseAuction\ReverseAuctionBundle\Entity\ProductInfo;
 use ReverseAuction\ReverseAuctionBundle\Entity\BidsInfo;
 use ReverseAuction\ReverseAuctionBundle\Entity\UserInfo;
-
-/**
- * ApplyBids Controller.
- * Author Name: Akhilesh Dahat
- * Date: 08 Sept 2014
- * Description: Apply the Bids from the User with the Current available products.
- */
-class ApplyBidsController extends Controller {
-
-    /**
-     * Apply The Bids from the User With the Relevant INformation.
-     *
-     */
-    public function ApplyBidsAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-
-        /* Check The request is Post */
-       if ($request->getMethod() == "POST") {
+ 
+class BidWinnerCommand extends ContainerAwareCommand
+{
+    protected function configure()
+    {
+        $this->setName('Akhilesh:BidWinnerCommand')
+            ->setDescription('This Command will run the Cron job for getting the Bid winner information')
+            ->addArgument('my_argument', InputArgument::OPTIONAL, 'Argument description');
+    }
+ 
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $em = $this->getContainer()->get('doctrine')->getManager();
+        // Do whatever
+        $output->writeln('Hello World');
+       /* $em->flush();
+    }*/  
+    
+    
+      /*if ($request->getMethod() == "POST") {
             $userId = $request->get('userId');
             $productId = $request->get('productId');
             $bEmail = $request->get('bEmail');
@@ -36,15 +42,15 @@ class ApplyBidsController extends Controller {
             $bAmount = $request->get('bAmount');
         } else {
             /* Return if the request is not post */
-            return new JsonResponse($this->noPostData());
-        }
+           /* return new JsonResponse($this->noPostData());
+        }*/
         
         
-           /* $userId = 57;
+            $userId = 57;
             $productId = 12;
             $bEmail = "sam@sams.com";
             $bProductName = "jhgh" ;
-            $bAmount = 3.39;*/
+            $bAmount = 3.39;
         
         /* Validation  For the User Input */
         if ($userId == "") {
@@ -209,5 +215,7 @@ class ApplyBidsController extends Controller {
         $mainData['data'] = $data;
         return $mainData;
     }
-
+    
+    
 }
+?>

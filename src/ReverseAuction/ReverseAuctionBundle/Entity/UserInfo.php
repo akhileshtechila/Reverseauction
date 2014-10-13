@@ -69,6 +69,11 @@ class UserInfo
      * @Assert\NotBlank(message="User Type is Blank")
      */
     private $userType;
+  
+    /**
+     * @var string
+     */
+    private $bidPoints;
 
     /**
      * @var \DateTime
@@ -520,5 +525,28 @@ class UserInfo
     public function getAddress()
     {
         return $this->address;
+    }
+   
+    /**
+     * Set bidPoints
+     *
+     * @param string $bidPoints
+     * @return UserInfo
+     */
+    public function setBidPoints($bidPoints)
+    {
+        $this->bidPoints = $bidPoints;
+
+        return $this;
+    }
+
+    /**
+     * Get bidPoints
+     *
+     * @return string 
+     */
+    public function getBidPoints()
+    {
+        return $this->bidPoints;
     }
 }

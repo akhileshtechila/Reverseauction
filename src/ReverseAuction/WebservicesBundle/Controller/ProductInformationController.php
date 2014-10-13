@@ -77,6 +77,7 @@ class ProductInformationController extends Controller {
             $ProductInfo->setPImage($pImage);
             $ProductInfo->setPDescription($pDescription);
             $ProductInfo->setPBidExpiry($pBidExpiry);
+            $ProductInfo->setMailsendflag(0);
 
             /* Validation the for the Entity Validation and Messages */
             $validator = $this->get('validator');
